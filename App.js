@@ -1,17 +1,17 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, ScrollView } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; 
 
 export default function App() {
   const [content, setContent] = useState('');
   let books = [
-    {id: 1, name: 'Harry Potter et sa braguette magmatique'},
-    {id: 2, name: 'Martine chez ta grand mère'},
-    {id: 3, name: "La chatte de l'archiduchesse"},
-    {id: 4, name: "Pierre à l'âge de Pierre"},
-    {id: 5, name: 'Martine à la plage'},
-    {id: 6, name: "50 nuances de schnek"},
-    {id: 7, name: 'Harry Potter et sa bite magique'}
+    {id: 1, name: 'Harry Potter et sa braguette magmatique', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate.'},
+    {id: 2, name: 'Martine chez ta grand mère', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate.'},
+    {id: 3, name: "La chatte de l'archiduchesse", description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate.'},
+    {id: 4, name: "Pierre à l'âge de Pierre", description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate.'},
+    {id: 5, name: 'Martine à la plage', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate.'},
+    {id: 6, name: "50 nuances de schnek", description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate.'},
+    {id: 7, name: 'Harry Potter et sa bite magique', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate.'}
   ];
   const [booksFiltered, setBooksFiltered] = useState([...books]);
 
@@ -23,9 +23,14 @@ export default function App() {
 
   const booksFilteredJSX = booksFiltered.map(book => {
     return (
+      <View>
       <Text key={book.id} style={styles.books}>
-        <AntDesign style={styles.icon} name="book" size={24} color="black" /> {book.name}
+        <AntDesign style={styles.icon} name="book" size={24} color="black" /> <Text style={styles.name}>{book.name}</Text>
       </Text>
+      <View style={styles.description}>
+        <Text style={styles.textDescription}>{book.description}</Text>
+      </View>
+      </View>
   )})
 
 // au clic du bouton filtrer le nom des livres par rapport
@@ -39,12 +44,16 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.title}>
       <Text style={styles.library}>Ma bibliothèque</Text>
+      </View>
       <View style={styles.form}>
       <TextInput style={styles.searchForm} value={content} onChangeText={(text) => {setContent(text)}} placeholder="nom du livre" />
       <Button title='OK' onPress={handleSubmit}/>
       </View>
+      <ScrollView>
       {booksFilteredJSX}
+      </ScrollView>
     </View>
   );
 }
@@ -53,17 +62,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor:'lightsteelblue'
   },
   library: {
     fontWeight: 'bold',
-    fontSize: 25
+    fontSize: 30,
+  },
+  title: {
+    alignItems: 'center',
+    paddingTop: 80,
+    marginBottom: 20,
   },
   searchForm: {
-    width: 200,
+    width: 300,
     borderColor: 'black',
-    borderWidth: 2
+    borderWidth: 2,
   },
   form: {
     margin: 30,
@@ -72,9 +86,25 @@ const styles = StyleSheet.create({
   },
   books: {
     flexDirection: 'row',
-    margin: 10
+    margin: 10,
+    alignItems: 'center',
+    marginBottom: 10,
+    marginTop: 20
   },
   icon: {
     marginRight: 5
-  }
+  },
+  name: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    justifyContent: 'center'
+  },
+  textDescription: {
+    fontSize: 15,
+    marginBottom: 10
+  },
+  description: {
+    alignItems: 'center'
+  }, 
+
 });
