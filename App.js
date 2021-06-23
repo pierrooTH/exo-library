@@ -9,7 +9,7 @@ export default function App() {
     {id: 2, name: 'Martine chez ta grand mère'},
     {id: 3, name: "La chatte de l'archiduchesse"},
     {id: 4, name: "Pierre à l'âge de Pierre"},
-    {id: 5, name: 'Martine à la place'},
+    {id: 5, name: 'Martine à la plage'},
     {id: 6, name: "50 nuances de schnek"},
     {id: 7, name: 'Harry Potter et sa bite magique'}
   ];
