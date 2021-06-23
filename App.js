@@ -5,34 +5,46 @@ import { AntDesign } from '@expo/vector-icons';
 export default function App() {
   const [content, setContent] = useState('');
   let books = [
-    {id: 1, name: 'Harry Potter et sa bite magique'},
-    {id: 2, name: '50 nuances de chattes'},
+    {id: 1, name: 'Harry Potter et sa braguette magmatique'},
+    {id: 2, name: 'Martine chez ta grand mère'},
     {id: 3, name: "La chatte de l'archiduchesse"},
     {id: 4, name: "Pierre à l'âge de Pierre"},
     {id: 5, name: 'Martine à la place'},
-    {id: 6, name: "Martine chez ta grand-mère"},
-    {id: 7, name: 'Harry Potter et sa braguette magmatique'}
+    {id: 6, name: "50 nuances de schnek"},
+    {id: 7, name: 'Harry Potter et sa bite magique'}
   ];
-  
-  const filteredBooks = books.filter(book => {
-    return book.name.toLowerCase().includes(content.toLowerCase())
-  })
+  const [booksFiltered, setBooksFiltered] = useState([...books]);
 
-  const booksJSX = filteredBooks.map(book => {
+  
+  // const filteredBooks = books.filter(book => {
+  //   return book.name.toLowerCase().includes(content.toLowerCase())
+  // })
+
+
+  const booksFilteredJSX = booksFiltered.map(book => {
     return (
       <Text key={book.id} style={styles.books}>
         <AntDesign style={styles.icon} name="book" size={24} color="black" /> {book.name}
       </Text>
   )})
 
+// au clic du bouton filtrer le nom des livres par rapport
+// au contenu de la recherche 
+// le tout en minuscule
+  const handleSubmit = () => {
+    setBooksFiltered(books.filter(book => {
+      return book.name.toLowerCase().includes(content.toLowerCase())
+    }))
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.library}>Ma bibliothèque</Text>
       <View style={styles.form}>
       <TextInput style={styles.searchForm} value={content} onChangeText={(text) => {setContent(text)}} placeholder="nom du livre" />
-      <Button title='OK' />
+      <Button title='OK' onPress={handleSubmit}/>
       </View>
-      {booksJSX}
+      {booksFilteredJSX}
     </View>
   );
 }
