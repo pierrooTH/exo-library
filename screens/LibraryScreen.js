@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import { StyleSheet, Text, View, TextInput, Button, ScrollView, FlatList } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; 
+import { ListItem } from 'react-native-elements';
 import axios from 'axios';
-import { SearchBar } from 'react-native-elements';
 
-export default function LibraryScreen() {
+export default function LibraryScreen({navigation}) {
     const [content, setContent] = useState('');
     const [booksGoogle, setBooksGoogle] = useState([]);
     const apiKeyGoogle = 'AIzaSyDrjiMJ-65Msopt5U_b0bqCvVxM_4HICYQ';
@@ -27,15 +27,26 @@ export default function LibraryScreen() {
       })
   }
 
-  const booksGoogleJSX = booksGoogle.map(book => {
-    return (
-      <View key={book.id} >
+  const renderItem = ({ item }) => (
+    <View>
+      <ListItem bottomDivider>
+        <ListItem.Content style={styles.content}>
       <Text style={styles.books}>
-        <AntDesign style={styles.icon} name="book" size={24} color="black" /> <Text style={styles.name}>{book.volumeInfo.title}</Text>
-      </Text>
-      <Text style={styles.description}>{book.volumeInfo.description}</Text>
-      </View>
-  )})
+        <AntDesign style={styles.icon} name="book" size={24} color="black" /> 
+        <ListItem.Title onPress={() => goToBookScreen(item)}  style={styles.name}>
+            {item.volumeInfo.title}</ListItem.Title>
+        </Text>
+        </ListItem.Content>
+        <ListItem.Chevron />
+      </ListItem>
+    </View>
+  )
+
+  function goToBookScreen(item) {
+    navigation.navigate('Book', {
+      book: item,
+    });
+  }
 
   return (
     <View style={styles.container}>
@@ -43,9 +54,12 @@ export default function LibraryScreen() {
       <TextInput style={styles.searchForm} value={content} onChangeText={(text) => {setContent(text)}} placeholder="nom du livre" />
       <Button title='OK' onPress={handleSubmit}/>
       </View>
-      <ScrollView>
-      {booksGoogleJSX}
-      </ScrollView>
+      <FlatList 
+          data={booksGoogle}
+          renderItem={renderItem}
+          keyExtractor={item => item.id.toString()}
+
+        />
     </View>
   );
 }
@@ -69,13 +83,10 @@ const styles = StyleSheet.create({
   books: {
     flexDirection: 'row',
     margin: 10,
-    alignItems: 'center',
     marginBottom: 10,
     marginTop: 20
   },
-  icon: {
-    marginRight: 5
-  },
+
   name: {
     fontSize: 20,
     fontWeight: 'bold',
