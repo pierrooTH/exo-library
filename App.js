@@ -14,7 +14,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home" screenOptions={{
         headerStyle: {
-          backgroundColor: '#378CCA'
+          backgroundColor: '#385fc2'
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
@@ -25,8 +25,8 @@ export default function App() {
         
       }}>
         <Stack.Screen name="Home" component={SplashScreen} options={{headerShown: false}}/>
-        <Stack.Screen name="Library" component={LibraryScreen} />
-        <Stack.Screen name="Book" component={BookScreen} />
+        <Stack.Screen name="Livres" component={LibraryScreen} />
+        <Stack.Screen name="Détails d'un livre" component={BookScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

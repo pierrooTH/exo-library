@@ -1,24 +1,25 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
 import { Card } from 'react-native-elements'
-import { AntDesign } from '@expo/vector-icons';
-import * as Linking from 'expo-linking';
+
 
 export default function BookScreen({route}) {
     const book = route.params.book
+
     return (
-                <Card>
-                <Card.Title style={styles.bookName}>{book.volumeInfo.title}</Card.Title>
-                <Card.Divider/>
-                
-                        <View key={book.id} style={styles.list}>
-                        <ScrollView>
-                        <Image style={styles.img}  source={{ uri: book.volumeInfo.imageLinks.thumbnail}}/>
-                        <Text style={styles.description}>{book.volumeInfo.description}</Text>
-                        </ScrollView>
-                        </View>
+            <View>
+                    <View key={book.id} style={styles.list}>
+                    <ScrollView showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}>
+                    <Image style={styles.img}  source={{uri: book.volumeInfo.readingModes.image  ? book.volumeInfo.imageLinks.thumbnail : 'https://www.my-bourg.ch/wp-content/uploads/2018/11/noavailable.png' }}/>
+                    <Text style={styles.bookName}>{book.volumeInfo.title}</Text>
+                    <Text style={styles.author}>{book.volumeInfo.readingModes.text ? book.volumeInfo.authors[0] : 'Auteur inconnu'}</Text>
+                    <Text style={styles.description}>{book.volumeInfo.description}</Text>
+                    <Text style={styles.date}>Date de parution: {book.volumeInfo.publishedDate}</Text>
+                    </ScrollView>
+                    </View>
                         
-                </Card>
+            </View>
     )
 }
 
@@ -27,12 +28,16 @@ const styles = StyleSheet.create({
         fontSize: 25,
     },
     description: {
-        fontSize: 17,
+        fontSize: 18,
         marginTop: 15,
         marginBottom: 15
     },
     bookName: {
-        fontSize: 22
+        fontSize: 25,
+        marginTop: 20,
+        marginBottom: 10,
+        alignSelf: 'center',
+        fontWeight: 'bold'
     },
     list: {
         padding: 15,
@@ -43,6 +48,17 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         margin: 15
     },
+    author: {
+        alignSelf: 'flex-end',
+        marginRight: 20,
+        fontSize: 20,
+        marginBottom: 15
+    },
+    date: {
+        alignSelf: 'center',
+        fontSize: 17,
+        margin: 20
+    }
     
 
 

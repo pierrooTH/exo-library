@@ -9,30 +9,42 @@ export default function SplashScreen({navigation}) {
           index: 0,
           routes: [
             {
-              name: 'Library',
+              name: 'Livres',
             }
           ]
         })
       }
-    return (
-        <View style={styles.container}>
-            <Image style={styles.imgLibrary} source={require('../assets/img/logo-library.png')}/>
 
-            <Button onPress={() => goToLibrary()} title="Commencer" type="outline"/>
-        </View>
-    )
+        return (
+          <View style={styles.container}>
+            <Text style={styles.title}>Book'App</Text>
+              <Image style={styles.imgLibrary} source={require('../assets/img/logo-library.png')}/>
+  
+              <Button onPress={() => goToLibrary()} title="Commencer" />
+          </View>
+      )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor:  '#385fc2',
         justifyContent: 'center',
         alignItems: 'center'
       },
     imgLibrary: {
         width: 300,
         height: 300,
+        margin: 20
     },
-    
+    title: {
+      fontSize: 50,
+      fontWeight: 'bold', 
+      color: 'white',
+      margin: 20,
+      fontFamily: 'Poppins'
+    },
+    loading: {
+      fontFamily: 'Poppins'
+    }
 })
