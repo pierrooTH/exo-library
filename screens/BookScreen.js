@@ -5,16 +5,18 @@ import { Card } from 'react-native-elements'
 
 export default function BookScreen({route}) {
     const book = route.params.book
+    let road = book.volumeInfo
+
 
     return (
             <View>
                     <View key={book.id} style={styles.list}>
                     <ScrollView showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}>
-                    <Image style={styles.img}  source={{uri: book.volumeInfo.readingModes.image  ? book.volumeInfo.imageLinks.thumbnail : 'https://www.my-bourg.ch/wp-content/uploads/2018/11/noavailable.png' }}/>
+                    <Image style={styles.img}  source={{uri: 'imageLinks' in road ? road.imageLinks.thumbnail : 'https://www.my-bourg.ch/wp-content/uploads/2018/11/noavailable.png' }}/>
                     <Text style={styles.bookName}>{book.volumeInfo.title}</Text>
-                    <Text style={styles.author}>{book.volumeInfo.readingModes.text ? book.volumeInfo.authors[0] : 'Auteur inconnu'}</Text>
-                    <Text style={styles.description}>{book.volumeInfo.description}</Text>
+                    <Text style={styles.author}>{'authors' in road ? book.volumeInfo.authors[0] : 'Auteur inconnu'}</Text>
+                    <Text style={styles.description}>{'description' in road ? book.volumeInfo.description : 'Aucune description'}</Text>
                     <Text style={styles.date}>Date de parution: {book.volumeInfo.publishedDate}</Text>
                     </ScrollView>
                     </View>
