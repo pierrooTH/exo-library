@@ -5,9 +5,7 @@ import { Card } from 'react-native-elements'
 
 export default function BookScreen({route}) {
     const book = route.params.book
-    let road = book.volumeInfo
-
-
+    const road = book.volumeInfo
     return (
             <View>
                     <View key={book.id} style={styles.list}>
