@@ -16,6 +16,7 @@ export default function LibraryScreen({navigation}) {
       'Roboto-Bold': require('../assets/font/Roboto-Bold.ttf')
     })
 
+  // fonction qui permet au clique du bouton de pouvoir rechercher un livre de l'API de Google
   const handleSubmit = () => {
     console.log(content);
       axios.get(`https://www.googleapis.com/books/v1/volumes?q=${content}&key=${apiKeyGoogle}&maxResults=20`)
@@ -26,11 +27,15 @@ export default function LibraryScreen({navigation}) {
  
   }
 
+  // Fonction qui permet d'ajouter un livre de l'API à un nouveau tableau des favoris
   const addBookToFavourite = (item) => {
+    // ici, on ajoute tout ce qu'il y a dans le tableau des favoriteBooks et également on ajoute le paramètre item
     const newBooks = [...favoriteBooks, item];
+    // on sauvgearde tout ça dans le tableau des favoriteBooks
     setFavoriteBooks(newBooks);
   }
 
+  // fonction qui permet de supprimer un livre en particulier des favoris
   const deleteBook = (item) => {
     const newArrayBooks = favoriteBooks.filter(book => book.id !== item.id);
     setFavoriteBooks(newArrayBooks);
@@ -104,10 +109,15 @@ export default function LibraryScreen({navigation}) {
     </View>
   )
 
-  function goToBookScreen(item) {
+  const goToBookScreen = (item) => {
     navigation.navigate("Détails d'un livre", {
       book: item,
     });
+  }
+  const goToFavoriteScreen = (booksGoogle) => {
+    navigation.navigate("Mes livres", {
+      book: booksGoogle
+    })
   }
 
   if(!fontsLoaded) {
