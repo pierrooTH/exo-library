@@ -31,6 +31,11 @@ export default function LibraryScreen({navigation}) {
     setFavoriteBooks(newBooks);
   }
 
+  const deleteBook = (item) => {
+    const newArrayBooks = favoriteBooks.filter(book => book.id !== item.id);
+    setFavoriteBooks(newArrayBooks);
+  }
+
 
   const renderItemFavoriteBooks = ({ item }) => (
     <View >
@@ -40,6 +45,7 @@ export default function LibraryScreen({navigation}) {
           title="Info"
           icon={{ name: 'info', color: 'white' }}
           buttonStyle={{ minHeight: '100%' }}
+          onPress={() => goToBookScreen(item)}
         />
       }
         rightContent={
@@ -47,7 +53,7 @@ export default function LibraryScreen({navigation}) {
             title="Supprimer"
             icon={{ name: 'delete', color: 'white' }}
             buttonStyle={{ minHeight: '100%', backgroundColor: 'red'}}
-            onPress={() => addBookToFavourite(item)}
+            onPress={() => deleteBook(item)}
           />
         }
       >
@@ -72,6 +78,7 @@ export default function LibraryScreen({navigation}) {
           title="Info"
           icon={{ name: 'info', color: 'white' }}
           buttonStyle={{ minHeight: '100%' }}
+          onPress={() => goToBookScreen(item)}
         />
       }
         rightContent={
@@ -101,10 +108,6 @@ export default function LibraryScreen({navigation}) {
     navigation.navigate("Détails d'un livre", {
       book: item,
     });
-  }
-
-  function goToFavoritesScreen() {
-    navigation.navigate("Mes livres");
   }
 
   if(!fontsLoaded) {
@@ -200,8 +203,4 @@ const styles = StyleSheet.create({
     width: 70,
     height: 100
   }
-
-
- 
-
 });
