@@ -1,22 +1,21 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState } from 'react'
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; 
 import { ListItem, SearchBar, Button } from 'react-native-elements';
 import axios from 'axios';
-import { block } from 'react-native-reanimated';
+import { useFonts } from 'expo-font';
+
 
 export default function LibraryScreen({navigation}) {
     const [content, setContent] = useState('');
     const [booksGoogle, setBooksGoogle] = useState([]);
     const apiKeyGoogle = 'AIzaSyDrjiMJ-65Msopt5U_b0bqCvVxM_4HICYQ';
+    const [favoriteBooks, setFavoriteBooks] = useState([]);
 
-    const myBooks = [
-      {id: 1, title: "Harry PotD'fleur et sa braguette magmatique", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque efficitur eros ornare metus congue, fringilla. "},
-      {id: 2, title: "Martine chez ta grand-mère", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque efficitur eros ornare metus congue, fringilla. "},
-      {id: 3, title: "Titeuf aime le jaune (pastis)", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque efficitur eros ornare metus congue, fringilla. "},
-      {id: 4, title: "Le seigneur des anaux", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque efficitur eros ornare metus congue, fringilla. "},
-      {id: 5, title: "Jul en Y", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque efficitur eros ornare metus congue, fringilla. "},
-    ]
+    let [fontsLoaded] = useFonts({
+      'Roboto-Regular': require('../assets/font/Roboto-Regular.ttf'),
+      'Roboto-Bold': require('../assets/font/Roboto-Bold.ttf')
+    })
 
   const handleSubmit = () => {
     console.log(content);
@@ -28,33 +27,71 @@ export default function LibraryScreen({navigation}) {
  
   }
 
-  const renderItemMyBooks = ({ item }) => (
-    <View style={ content !== '' ? styles.noDisplayContent : styles.displayContent}>
-      <ListItem bottomDivider>
-        <ListItem.Content style={styles.content}>
-      <Text style={styles.books}>
-        <AntDesign style={styles.icon} name="book" size={24} color="black" /> 
-        <ListItem.Title  style={styles.name}>
-            {item.title}</ListItem.Title>
-        </Text>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
-    </View>
-  )
+  const addBookToFavourite = (item) => {
+    const newBooks = [...favoriteBooks, item];
+    setFavoriteBooks(newBooks);
+  }
 
-  const renderItem = ({ item }) => (
+
+  const renderItemFavoriteBooks = ({ item }) => (
     <View >
-      <ListItem bottomDivider>
+      <ListItem.Swipeable
+      leftContent={
+        <Button
+          title="Info"
+          icon={{ name: 'info', color: 'white' }}
+          buttonStyle={{ minHeight: '100%' }}
+        />
+      }
+        rightContent={
+          <Button
+            title="Supprimer"
+            icon={{ name: 'delete', color: 'white' }}
+            buttonStyle={{ minHeight: '100%', backgroundColor: 'red'}}
+            onPress={() => addBookToFavourite(item)}
+          />
+        }
+      >
+        <AntDesign style={styles.icon} name="book" size={24} color="black" /> 
         <ListItem.Content style={styles.content}>
       <Text style={styles.books}>
-        <AntDesign style={styles.icon} name="book" size={24} color="black" /> 
         <ListItem.Title onPress={() => goToBookScreen(item)}  style={styles.name}>
             {item.volumeInfo.title}</ListItem.Title>
         </Text>
         </ListItem.Content>
         <ListItem.Chevron />
-      </ListItem>
+        </ListItem.Swipeable>
+    </View>
+  )
+
+  const renderItem = ({ item }) => (
+    <View >
+      <ListItem.Swipeable
+      leftContent={
+        <Button
+          title="Info"
+          icon={{ name: 'info', color: 'white' }}
+          buttonStyle={{ minHeight: '100%' }}
+        />
+      }
+        rightContent={
+          <Button
+            title="Ajouter"
+            icon={{ name: 'add', color: 'white' }}
+            buttonStyle={{ minHeight: '100%', backgroundColor: 'lightgreen'}}
+            onPress={() => addBookToFavourite(item)}
+          />
+        }
+      >
+        <AntDesign style={styles.icon} name="book" size={24} color="black" /> 
+        <ListItem.Content style={styles.content}>
+      <Text style={styles.books}>
+        <ListItem.Title onPress={() => goToBookScreen(item)}  style={styles.name}>
+            {item.volumeInfo.title}</ListItem.Title>
+        </Text>
+        </ListItem.Content>
+        <ListItem.Chevron />
+        </ListItem.Swipeable>
     </View>
   )
 
@@ -64,6 +101,9 @@ export default function LibraryScreen({navigation}) {
     });
   }
 
+  if(!fontsLoaded) {
+    return <Text>Loading...</Text>
+  } else {
     return (
       <View style={styles.container}>
         <View style={styles.form}>
@@ -78,12 +118,13 @@ export default function LibraryScreen({navigation}) {
         />
         <Button containerStyle={styles.btn} title='OK' onPress={handleSubmit}/>
         </View>
+        <Text style={styles.favorite}>Mes favoris</Text>
         <FlatList 
-            data={myBooks}
-            renderItem={renderItemMyBooks}
-            keyExtractor={item => item.id.toString()}
+            data={favoriteBooks}
+            renderItem={renderItemFavoriteBooks}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
+            style={styles.favoriteList}
           />
         <FlatList 
             data={booksGoogle}
@@ -94,6 +135,7 @@ export default function LibraryScreen({navigation}) {
           />
       </View>
     );
+  } 
 }
 
 const styles = StyleSheet.create({
@@ -121,14 +163,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     justifyContent: 'center',
-    fontFamily: 'Poppins'
+    fontFamily: 'Roboto-Bold'
   },
   btn: {
     justifyContent: 'center'
   },
   textSearchBar: {
     color: '#385fc2',
-    fontFamily: 'Poppins'
+    fontFamily: 'Roboto-Bold'
   },
   noDisplayContent: {
     display: 'none'
@@ -136,7 +178,20 @@ const styles = StyleSheet.create({
   displayContent: {
     display: 'flex'
   },
-  
+  favorite: {
+    color: 'white', 
+    fontSize: 25,
+    fontFamily: 'Roboto-Regular',
+    alignSelf: 'center',
+    padding: 10,
+    margin: 10
+  },
+  favoriteList: {
+    marginBottom: 20,
+    height: '30%'
+  },
+
+
  
 
 });

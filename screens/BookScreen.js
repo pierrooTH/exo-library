@@ -1,12 +1,20 @@
-import React from 'react'
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
-import { Card } from 'react-native-elements'
-
+import React from 'react';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { useFonts } from 'expo-font';
 
 export default function BookScreen({route}) {
     const book = route.params.book
     const road = book.volumeInfo
-    return (
+
+    let [fontsLoaded] = useFonts({
+        'Roboto-Regular': require('../assets/font/Roboto-Regular.ttf'),
+        'Roboto-Bold': require('../assets/font/Roboto-Bold.ttf')
+      })
+
+    if(!fontsLoaded) {
+        return <Text>Loading...</Text>
+    } else {
+        return (
             <View>
                     <View key={book.id} style={styles.list}>
                     <ScrollView showsVerticalScrollIndicator={false}
@@ -21,23 +29,27 @@ export default function BookScreen({route}) {
                         
             </View>
     )
+    }
 }
 
 const styles = StyleSheet.create({
     name: {
         fontSize: 25,
+        fontFamily: 'Roboto-Regular'
     },
     description: {
         fontSize: 18,
         marginTop: 15,
-        marginBottom: 15
+        marginBottom: 15,
+        fontFamily: 'Roboto-Regular'
     },
     bookName: {
         fontSize: 25,
         marginTop: 20,
         marginBottom: 10,
         alignSelf: 'center',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontFamily: 'Roboto-Bold'
     },
     list: {
         padding: 15,
@@ -52,12 +64,14 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         marginRight: 20,
         fontSize: 20,
-        marginBottom: 15
+        marginBottom: 15,
+        fontFamily: 'Roboto-Regular'
     },
     date: {
         alignSelf: 'center',
         fontSize: 17,
-        margin: 20
+        margin: 20,
+        fontFamily: 'Roboto-Regular'
     }
     
 

@@ -1,8 +1,14 @@
 import React from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { Button } from 'react-native-elements';
+import { useFonts } from 'expo-font';
 
 export default function SplashScreen({navigation}) {
+
+  let [fontsLoaded] = useFonts({
+    'Roboto-Regular': require('../assets/font/Roboto-Regular.ttf'),
+    'Roboto-Bold': require('../assets/font/Roboto-Bold.ttf')
+  })
 
     function goToLibrary() {
         navigation.reset({
@@ -15,14 +21,19 @@ export default function SplashScreen({navigation}) {
         })
       }
 
-        return (
-          <View style={styles.container}>
-            <Text style={styles.title}>Book'App</Text>
-              <Image style={styles.imgLibrary} source={require('../assets/img/logo-library.png')}/>
-  
-              <Button onPress={() => goToLibrary()} title="Commencer" />
-          </View>
-      )
+      if(!fontsLoaded) {
+        return <Text>Loading...</Text>
+    } else {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.title}>Book'App</Text>
+            <Image style={styles.imgLibrary} source={require('../assets/img/logo-library.png')}/>
+
+            <Button onPress={() => goToLibrary()} title="Commencer" />
+        </View>
+    )
+    }
+
 }
 
 const styles = StyleSheet.create({
@@ -40,11 +51,8 @@ const styles = StyleSheet.create({
     title: {
       fontSize: 50,
       fontWeight: 'bold', 
+      fontFamily: 'Roboto-Bold',
       color: 'white',
       margin: 20,
-      fontFamily: 'Poppins'
-    },
-    loading: {
-      fontFamily: 'Poppins'
     }
 })
