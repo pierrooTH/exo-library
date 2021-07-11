@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { useFonts } from 'expo-font';
+import { Button } from 'react-native-elements';
 
 export default function BookScreen({route}) {
     const book = route.params.book
@@ -24,6 +25,7 @@ export default function BookScreen({route}) {
                     <Text style={styles.author}>{'authors' in road ? book.volumeInfo.authors[0] : 'Auteur inconnu'}</Text>
                     <Text style={styles.description}>{'description' in road ? book.volumeInfo.description : 'Aucune description'}</Text>
                     <Text style={styles.date}>Date de parution: {book.volumeInfo.publishedDate}</Text>
+                    <Button title="Enregistrer en favoris"></Button>
                     </ScrollView>
                     </View>
                         

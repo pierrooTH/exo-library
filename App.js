@@ -33,7 +33,7 @@ export default function App() {
           
         }}>
           <Stack.Screen name="Home" component={SplashScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="Livres" component={LibraryScreen} />
+          <Stack.Screen name="Rechercher un livre" component={LibraryScreen} />
           <Stack.Screen name="Détails d'un livre" component={BookScreen} />
         </Stack.Navigator>
       </NavigationContainer>

@@ -15,7 +15,7 @@ export default function SplashScreen({navigation}) {
           index: 0,
           routes: [
             {
-              name: 'Livres',
+              name: 'Rechercher un livre',
             }
           ]
         })

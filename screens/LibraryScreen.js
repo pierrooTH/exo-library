@@ -1,6 +1,5 @@
 import React, {useState } from 'react'
-import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { AntDesign } from '@expo/vector-icons'; 
+import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
 import { ListItem, SearchBar, Button } from 'react-native-elements';
 import axios from 'axios';
 import { useFonts } from 'expo-font';
@@ -52,7 +51,8 @@ export default function LibraryScreen({navigation}) {
           />
         }
       >
-        <AntDesign style={styles.icon} name="book" size={24} color="black" /> 
+        <Image style={styles.img}  source={{uri: 'imageLinks' in item.volumeInfo ? item.volumeInfo.imageLinks.thumbnail : 'https://www.my-bourg.ch/wp-content/uploads/2018/11/noavailable.png' }}/>
+
         <ListItem.Content style={styles.content}>
       <Text style={styles.books}>
         <ListItem.Title onPress={() => goToBookScreen(item)}  style={styles.name}>
@@ -61,8 +61,8 @@ export default function LibraryScreen({navigation}) {
         </ListItem.Content>
         <ListItem.Chevron />
         </ListItem.Swipeable>
-    </View>
-  )
+  </View>
+)
 
   const renderItem = ({ item }) => (
     <View >
@@ -83,7 +83,9 @@ export default function LibraryScreen({navigation}) {
           />
         }
       >
-        <AntDesign style={styles.icon} name="book" size={24} color="black" /> 
+        
+        <Image style={styles.img}  source={{uri: 'imageLinks' in item.volumeInfo ? item.volumeInfo.imageLinks.thumbnail : 'https://www.my-bourg.ch/wp-content/uploads/2018/11/noavailable.png' }}/>
+
         <ListItem.Content style={styles.content}>
       <Text style={styles.books}>
         <ListItem.Title onPress={() => goToBookScreen(item)}  style={styles.name}>
@@ -99,6 +101,10 @@ export default function LibraryScreen({navigation}) {
     navigation.navigate("Détails d'un livre", {
       book: item,
     });
+  }
+
+  function goToFavoritesScreen() {
+    navigation.navigate("Mes livres");
   }
 
   if(!fontsLoaded) {
@@ -118,14 +124,14 @@ export default function LibraryScreen({navigation}) {
         />
         <Button containerStyle={styles.btn} title='OK' onPress={handleSubmit}/>
         </View>
-        <Text style={styles.favorite}>Mes favoris</Text>
-        <FlatList 
+         <Text style={styles.favorite}>Mes favoris</Text>
+         <FlatList 
             data={favoriteBooks}
             renderItem={renderItemFavoriteBooks}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             style={styles.favoriteList}
-          />
+          /> 
         <FlatList 
             data={booksGoogle}
             renderItem={renderItem}
@@ -190,6 +196,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     height: '30%'
   },
+  img: {
+    width: 70,
+    height: 100
+  }
 
 
  
